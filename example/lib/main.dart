@@ -53,8 +53,7 @@ class _TempScreenState extends State<TempScreen> {
                     color: Colors.blue,
                     minRadius: 100,
                     ripplesCount: 6,
-                    child: Container()
-                ),
+                    child: Container()),
               ),
             ),
           ],

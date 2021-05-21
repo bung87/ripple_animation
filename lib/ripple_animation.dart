@@ -17,9 +17,9 @@ class RippleAnimation extends StatefulWidget {
   final bool repeat;
 
   const RippleAnimation({
-    Key key,
-    @required this.child,
-    @required this.color,
+    Key? key,
+    required this.child,
+    required this.color,
     this.delay = const Duration(milliseconds: 0),
     this.repeat = false,
     this.minRadius = 60,
@@ -33,7 +33,7 @@ class RippleAnimation extends StatefulWidget {
 
 class _RippleAnimationState extends State<RippleAnimation>
     with TickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _RippleAnimationState extends State<RippleAnimation>
 
     // repeating or just forwarding the animation once.
     Timer(widget.delay, () {
-      widget.repeat ? _controller?.repeat() : _controller?.forward();
+      widget.repeat ? _controller.repeat() : _controller.forward();
     });
 
     super.initState();
@@ -55,7 +55,7 @@ class _RippleAnimationState extends State<RippleAnimation>
     return CustomPaint(
       painter: CirclePainter(
         _controller,
-        color: widget.color ?? Colors.black,
+        color: widget.color,
         minRadius: widget.minRadius,
         wavesCount: widget.ripplesCount + 2,
       ),
@@ -74,13 +74,15 @@ class _RippleAnimationState extends State<RippleAnimation>
 class CirclePainter extends CustomPainter {
   CirclePainter(
     this._animation, {
-    this.minRadius,
+    required this.minRadius,
     this.wavesCount,
-    @required this.color,
+    this.stroke = 1,
+    required this.color,
   }) : super(repaint: _animation);
   final Color color;
   final double minRadius;
   final wavesCount;
+  final double stroke;
   final Animation<double> _animation;
 
   @override
@@ -102,6 +104,14 @@ class CirclePainter extends CustomPainter {
 
       r = minRadius * (1 + ((wave * value))) * value;
       final Paint paint = Paint()..color = _color;
+      print(stroke);
+      if (stroke != 0) {
+        paint
+          ..strokeWidth = stroke
+          ..style = PaintingStyle.stroke;
+        // ..strokeCap = StrokeCap.round;
+      }
+
       canvas.drawCircle(rect.center, r, paint);
     }
   }
