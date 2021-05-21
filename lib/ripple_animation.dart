@@ -107,7 +107,6 @@ class CirclePainter extends CustomPainter {
 
       r = minRadius * (1 + ((wave * value))) * value;
       final Paint paint = Paint()..color = _color;
-      print(stroke);
       if (stroke != 0) {
         paint
           ..strokeWidth = stroke
